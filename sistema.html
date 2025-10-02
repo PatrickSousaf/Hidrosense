@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sistema de Monitoramento Arduino</title>
+  <title>Gerenciamento do Sistema - Monitoramento Arduino</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -11,7 +11,7 @@
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Inter', sans-serif;
       background: #f8fafc;
@@ -20,7 +20,7 @@
       color: #334155;
       line-height: 1.6;
     }
-    
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -29,65 +29,37 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.04);
       overflow: hidden;
     }
-    
+
     .header {
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
       color: white;
-      padding: 2.5rem 2rem 1rem 2rem;
+      padding: 2.5rem 2rem;
       text-align: center;
-      position: relative;
     }
 
-    .menu {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-
-    .menu-btn {
-      background: rgba(255,255,255,0.1);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 500;
-    }
-
-    .menu-btn.active {
-      background: rgba(255,255,255,0.2);
-      border-color: rgba(255,255,255,0.4);
-    }
-
-    .menu-btn:hover {
-      background: rgba(255,255,255,0.15);
-    }
-    
     .header h1 {
       font-size: 2.2rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
     }
-    
+
     .header p {
       font-size: 1.1rem;
       opacity: 0.9;
       font-weight: 400;
     }
-    
+
     .content {
       padding: 2.5rem 2rem;
     }
-    
+
     .controls {
       display: flex;
       justify-content: center;
       gap: 1rem;
       margin-bottom: 2.5rem;
     }
-    
+
     .btn {
       padding: 0.9rem 2rem;
       font-size: 1rem;
@@ -100,40 +72,40 @@
       align-items: center;
       gap: 0.5rem;
     }
-    
+
     .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none !important;
     }
-    
+
     .btn-primary {
       background: #10b981;
       color: white;
     }
-    
+
     .btn-primary:hover:not(:disabled) {
       background: #059669;
       transform: translateY(-2px);
     }
-    
+
     .btn-danger {
       background: #ef4444;
       color: white;
     }
-    
+
     .btn-danger:hover:not(:disabled) {
       background: #dc2626;
       transform: translateY(-2px);
     }
-    
+
     .dashboard {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.5rem;
       margin-bottom: 2.5rem;
     }
-    
+
     .card {
       background: white;
       border-radius: 12px;
@@ -142,34 +114,34 @@
       border: 1px solid #f1f5f9;
       transition: all 0.2s ease;
     }
-    
+
     .card:hover {
       box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
-    
+
     .card-header {
       display: flex;
       align-items: center;
       gap: 0.8rem;
       margin-bottom: 1.5rem;
     }
-    
+
     .card-icon {
       font-size: 1.8rem;
     }
-    
+
     .card-title {
       font-size: 1.2rem;
       font-weight: 600;
       color: #1e293b;
     }
-    
+
     .card-data {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
-    
+
     .data-item {
       display: flex;
       justify-content: space-between;
@@ -177,22 +149,22 @@
       padding-bottom: 0.8rem;
       border-bottom: 1px solid #f1f5f9;
     }
-    
+
     .data-item:last-child {
       border-bottom: none;
     }
-    
+
     .data-label {
       font-weight: 500;
       color: #64748b;
     }
-    
+
     .data-value {
       font-weight: 600;
       font-size: 1.1rem;
       color: #1e293b;
     }
-    
+
     .status-indicator {
       display: inline-block;
       width: 10px;
@@ -200,11 +172,11 @@
       border-radius: 50%;
       margin-right: 0.5rem;
     }
-    
+
     .status-online { background: #10b981; }
     .status-offline { background: #94a3b8; }
     .status-warning { background: #f59e0b; }
-    
+
     .last-update {
       text-align: center;
       background: #f8fafc;
@@ -213,83 +185,12 @@
       margin-bottom: 2.5rem;
       border: 1px solid #e2e8f0;
     }
-    
+
     .last-update strong {
       color: #475569;
       font-size: 1rem;
     }
-    
-    .log-section {
-      background: #1e293b;
-      border-radius: 12px;
-      padding: 1.8rem;
-      color: #cbd5e1;
-      font-family: 'Fira Code', 'Courier New', monospace;
-    }
-    
-    .log-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.2rem;
-      cursor: pointer;
-      user-select: none;
-    }
-    
-    .log-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .log-toggle {
-      font-size: 1.2rem;
-      transition: transform 0.3s ease;
-    }
-    
-    .log-content {
-      max-height: 300px;
-      overflow-y: auto;
-      background: rgba(0,0,0,0.2);
-      border-radius: 8px;
-      padding: 1rem;
-      font-size: 0.85rem;
-      line-height: 1.5;
-    }
-    
-    .log-content::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .log-content::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.05);
-      border-radius: 3px;
-    }
-    
-    .log-content::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.2);
-      border-radius: 3px;
-    }
-    
-    .log-entry {
-      margin-bottom: 0.5rem;
-      padding: 0.25rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    
-    .log-entry:last-child {
-      border-bottom: none;
-    }
-    
-    .no-data {
-      color: #94a3b8;
-      font-style: italic;
-      text-align: center;
-      padding: 1.5rem;
-    }
-    
+
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -298,39 +199,39 @@
         opacity: 1;
       }
     }
-    
-    .card, .last-update, .log-section {
+
+    .card, .last-update {
       animation: fadeIn 0.4s ease-out;
     }
-    
+
     @media (max-width: 768px) {
       body {
         padding: 1rem;
       }
-      
+
       .header {
         padding: 2rem 1rem;
       }
-      
+
       .header h1 {
         font-size: 1.8rem;
       }
-      
+
       .content {
         padding: 2rem 1rem;
       }
-      
+
       .controls {
         flex-direction: column;
         align-items: center;
         gap: 0.8rem;
       }
-      
+
       .dashboard {
         grid-template-columns: 1fr;
         gap: 1.2rem;
       }
-      
+
       .card {
         padding: 1.5rem;
       }
@@ -340,93 +241,76 @@
 <body>
   <div class="container">
     <header class="header">
-      <h1>🌱 Sistema de Monitoramento Arduino</h1>
+      <h1>🌱 Gerenciamento do Sistema</h1>
       <p>Monitoramento em tempo real de sensores e consumo</p>
-      <div class="menu">
-        <button class="menu-btn active" id="menuSistema">Gerenciamento do Sistema</button>
-        <button class="menu-btn" id="menuLogs">Logs</button>
-      </div>
     </header>
 
     <main class="content">
-      <div id="sistemaSection">
-        <div class="controls">
-          <button id="btnStart" class="btn btn-primary">
-            <span>▶️</span>
-            <span>Iniciar Monitoramento</span>
-          </button>
-          <button id="btnStop" class="btn btn-danger" disabled>
-            <span>⏹️</span>
-            <span>Parar Monitoramento</span>
-          </button>
-        </div>
+      <div class="controls">
+        <button id="btnStart" class="btn btn-primary">
+          <span>▶️</span>
+          <span>Iniciar Monitoramento</span>
+        </button>
+        <button id="btnStop" class="btn btn-danger" disabled>
+          <span>⏹️</span>
+          <span>Parar Monitoramento</span>
+        </button>
+      </div>
 
-        <div class="dashboard">
-          <div class="card">
-            <div class="card-header">
-              <span class="card-icon">📊</span>
-              <h3 class="card-title">Sensor de Umidade</h3>
-            </div>
-            <div class="card-data">
-              <div class="data-item">
-                <span class="data-label">Leitura Atual:</span>
-                <span class="data-value" id="leituraSensor">--</span>
-              </div>
-              <div class="data-item">
-                <span class="data-label">Umidade:</span>
-                <span class="data-value" id="umidade">--</span>
-              </div>
-            </div>
+      <div class="dashboard">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-icon">📊</span>
+            <h3 class="card-title">Sensor de Umidade</h3>
           </div>
-
-          <div class="card">
-            <div class="card-header">
-              <span class="card-icon">⚡</span>
-              <h3 class="card-title">Consumo de Recursos</h3>
+          <div class="card-data">
+            <div class="data-item">
+              <span class="data-label">Leitura Atual:</span>
+              <span class="data-value" id="leituraSensor">--</span>
             </div>
-            <div class="card-data">
-              <div class="data-item">
-                <span class="data-label">Água:</span>
-                <span class="data-value" id="consumoAgua">--</span>
-              </div>
-              <div class="data-item">
-                <span class="data-label">Energia:</span>
-                <span class="data-value" id="consumoEnergia">--</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <span class="card-icon">🌿</span>
-              <h3 class="card-title">Status do Solo</h3>
-            </div>
-            <div class="card-data">
-              <div class="data-item">
-                <span class="data-label">Condição:</span>
-                <span class="data-value">
-                  <span class="status-indicator" id="statusIndicator"></span>
-                  <span id="statusSolo">Aguardando...</span>
-                </span>
-              </div>
+            <div class="data-item">
+              <span class="data-label">Umidade:</span>
+              <span class="data-value" id="umidade">--</span>
             </div>
           </div>
         </div>
 
-        <div class="last-update">
-          <strong>Última atualização:</strong> <span id="ultimaAtualizacao">Aguardando dados...</span>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-icon">⚡</span>
+            <h3 class="card-title">Consumo de Recursos</h3>
+          </div>
+          <div class="card-data">
+            <div class="data-item">
+              <span class="data-label">Água:</span>
+              <span class="data-value" id="consumoAgua">--</span>
+            </div>
+            <div class="data-item">
+              <span class="data-label">Energia:</span>
+              <span class="data-value" id="consumoEnergia">--</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-icon">🌿</span>
+            <h3 class="card-title">Status do Solo</h3>
+          </div>
+          <div class="card-data">
+            <div class="data-item">
+              <span class="data-label">Condição:</span>
+              <span class="data-value">
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="statusSolo">Aguardando...</span>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div id="logsSection" style="display: none;">
-        <div class="log-section">
-          <div class="log-header">
-            <h3 class="log-title">📋 Log de Dados</h3>
-          </div>
-          <div class="log-content" id="logContent" style="display: block;">
-            <div class="no-data">Aguardando dados do Arduino...</div>
-          </div>
-        </div>
+      <div class="last-update">
+        <strong>Última atualização:</strong> <span id="ultimaAtualizacao">Aguardando dados...</span>
       </div>
     </main>
   </div>
@@ -434,7 +318,6 @@
   <script>
     let socket = null;
     let isReading = false;
-    let logEntries = [];
     let statusData = {
       leituraSensor: null,
       umidade: null,
@@ -446,11 +329,6 @@
 
     const btnStart = document.getElementById("btnStart");
     const btnStop = document.getElementById("btnStop");
-    const logContent = document.getElementById("logContent");
-    const menuSistema = document.getElementById("menuSistema");
-    const menuLogs = document.getElementById("menuLogs");
-    const sistemaSection = document.getElementById("sistemaSection");
-    const logsSection = document.getElementById("logsSection");
 
     function updateUI() {
       document.getElementById('leituraSensor').textContent = statusData.leituraSensor || "--";
@@ -474,36 +352,8 @@
       }
     }
 
-    function updateLog() {
-      logContent.innerHTML = '';
-      if (logEntries.length === 0) {
-        logContent.innerHTML = '<div class="no-data">Aguardando dados do Arduino...</div>';
-      } else {
-        logEntries.forEach(entry => {
-          const div = document.createElement('div');
-          div.className = 'log-entry';
-          div.textContent = entry;
-          logContent.appendChild(div);
-        });
-        logContent.scrollTop = logContent.scrollHeight;
-      }
-    }
-
-    function toggleLog() {
-      const isExpanded = logContent.style.display !== 'none';
-      logContent.style.display = isExpanded ? 'none' : 'block';
-      logToggle.textContent = isExpanded ? '▼' : '▲';
-    }
-
     function parseArduinoData(data) {
       console.log("Dados recebidos:", data);
-
-      // Add to log
-      logEntries.unshift(`[${new Date().toLocaleTimeString()}] ${data}`);
-      if (logEntries.length > 100) {
-        logEntries = logEntries.slice(0, 100);
-      }
-      updateLog();
 
       // Parse structured data
       if (data.includes("Leitura do Sensor:")) {
@@ -581,7 +431,6 @@
     btnStop.addEventListener("click", stopReading);
 
     updateUI();
-    updateLog();
   </script>
 </body>
 </html>

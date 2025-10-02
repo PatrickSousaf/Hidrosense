@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sistema de Monitoramento Arduino</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ecf0f5;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 230px;
+      background: #222d32;
+      color: #b8c7ce;
+      padding: 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar .brand {
+      background: #367fa9;
+      color: white;
+      padding: 15px 20px;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-menu li {
+      border-bottom: 1px solid #2c3b41;
+    }
+
+    .sidebar-menu button {
+      width: 100%;
+      background: none;
+      color: #b8c7ce;
+      border: none;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 400;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-menu button:hover {
+      background: #1e282c;
+      color: #ffffff;
+    }
+
+    .sidebar-menu button.active {
+      background: #1e282c;
+      color: #ffffff;
+      border-left: 3px solid #3c8dbc;
+    }
+
+    .sidebar-menu button i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .main-content {
+      flex: 1;
+      margin-left: 230px;
+      padding: 0;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">🌱 Monitoramento</div>
+    <ul class="sidebar-menu">
+      <li><button id="menuSistema" class="active"><i>📊</i> Sistema</button></li>
+      <li><button id="menuLogs"><i>📋</i> Logs</button></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <iframe id="contentFrame" src="sistema.html"></iframe>
+  </main>
+
+  <script>
+    const menuSistema = document.getElementById("menuSistema");
+    const menuLogs = document.getElementById("menuLogs");
+    const contentFrame = document.getElementById("contentFrame");
+
+    function setActive(button) {
+      document.querySelectorAll('.sidebar-menu button').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+    }
+
+    menuSistema.addEventListener("click", () => {
+      contentFrame.src = "sistema.html";
+      setActive(menuSistema);
+    });
+
+    menuLogs.addEventListener("click", () => {
+      contentFrame.src = "logs.html";
+      setActive(menuLogs);
+    });
+  </script>
+</body>
+</html>
